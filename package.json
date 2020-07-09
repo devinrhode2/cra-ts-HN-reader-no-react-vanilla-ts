@@ -3,23 +3,81 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "@types/jest": "^24.0.0",
-    "@types/node": "^12.0.0",
-    "@types/react": "^16.9.0",
-    "@types/react-dom": "^16.9.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1",
-    "typescript": "~3.7.2"
+    "core-js": "^3.6.5",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "hacker-news-api-types": "^1.0.1",
+    "history": "^5.0.0",
+    "lodash": "^4.17.19",
+    "moment": "^2.27.0",
+    "normalize.css": "^8.0.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^3.1.0",
+    "@typescript-eslint/parser": "^3.6.0",
+    "cross-env": "^7.0.2",
+    "eslint": "^7.4.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-airbnb-typescript": "^8.0.2",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-formatter-compassion": "^1.1.2",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-security": "^1.4.0",
+    "eslint-plugin-unicorn": "^20.1.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
+    "onchange": "^7.0.2",
+    "prettier": "^2.0.5",
+    "pretty": "^2.0.0",
+    "react-scripts": "^3.4.1",
+    "typescript": "^3.9.6",
+    "yarnhook": "^0.4.3"
+  },
+  "lint-staged": {
+    "src/app/**/*.{js,jsx}": [
+      "eslint --fix",
+      "git add"
+    ],
+    "src/**/*.{js,jsx,css,scss}": [
+      "prettier --write --loglevel \"warn\"",
+      "git add"
+    ]
   },
   "scripts": {
-    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start": "onchange -i -k \"package.json\" \"tsconfig.json\" -- npm run craStart",
+    "craStart": "cross-env TSC_COMPILE_ON_ERROR=true EXTEND_ESLINT=true SKIP_PREFLIGHT_CHECK=true react-scripts start",
+    "lint": "eslint \"**/*.*\" --fix && prettier \"**/*.*\" --write --loglevel \"warn\" ",
+    "preinstall": "echo \"Including .gitconfig\" && git config --local include.path $PWD/.gitconfig && npx run-script-os",
+    "install:macos": "mkdir -p node_modules && touch node_modules/.metadata_never_index # https://github.com/npm/cli/issues/549",
+    "add:darwin": "mkdir -p node_modules && touch node_modules/.metadata_never_index # https://github.com/npm/cli/issues/549",
+    "install:default": "echo \"All is well.\"",
+    "add:default": "echo \"All is well.\"",
+    "purgecssBuildForFirefox": "purgecss --css build/static/css/*.css --content build/static/index.html build/static/js/*.js --out build/static/css"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && echo \"husky pre-commit hook (has git hook .sample)\"",
+      "post-merge": "echo \"husky post-merge hook, args: $*\" && yarnhook",
+      "post-applypatch": "echo \"husky post-applypatch hook\"",
+      "post-checkout": "echo \"husky post-checkout hook\" && yarnhook",
+      "post-commit": "echo \"husky post-commit hook\" && echo \"here we could automatically add style commits to .git-blame-ignore-revs\"",
+      "post-receive": "echo \"husky post-receive hook\"",
+      "post-rewrite": "echo \"husky post-rewrite hook\" && yarnhook",
+      "pre-auto-gc": "echo \"husky pre-auto-gc hook\"",
+      "push-to-checkout": "echo \"husky push-to-checkout hook\"",
+      "applypatch-msg": "echo \"husky applypatch-msg hook (has git hook .sample)\"",
+      "commit-msg": "echo \"commitlint disabled for this project\" && commitlint -E HUSKY_GIT_PARAMS",
+      "post-update": "echo \"husky post-update hook (has git hook .sample)\"",
+      "pre-applypatch": "echo \"husky pre-applypatch hook (has git hook .sample)\"",
+      "pre-push": "echo \"husky pre-push hook (has git hook .sample)\"",
+      "pre-rebase": "echo \"husky pre-rebase hook (has git hook .sample)\" && yarnhook",
+      "pre-receive": "echo \"husky pre-receive hook (has git hook .sample)\"",
+      "prepare-commit-msg": "echo \"husky prepare-commit-msg hook (has git hook .sample)\"",
+      "update": "echo \"husky update hook (has git hook .sample)\""
+    }
   },
   "eslintConfig": {
     "extends": "react-app"

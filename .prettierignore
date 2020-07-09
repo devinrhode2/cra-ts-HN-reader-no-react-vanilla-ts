@@ -1,0 +1,36 @@
+# .prettierignore and .eslintignore almost match -
+# eslint more narrowly focused than prettier, so also ignores
+# scss and json, whereas prettier doens't.
+# Consider also adding new ignores to stylelintignore, since some are duplicated
+
+# Shouldn't have to but had to in one instance..
+node_modules
+build
+
+# These are actually just for prettier, since it reads this ignore file too:
+*.ttf
+*.woff2
+*.woff
+*.eot
+*.png
+*.svg
+*.jpg
+*.jpeg
+
+*.txt
+*.sh
+*.ico
+
+package.json
+deprecated-package.json
+package-lock.json
+.babelrc
+src/app/version.json
+yarn.lock
+yarn-error.log
+
+# ignore files: (.gitignore, etc)
+.*
+
+# .tool-configrc.js files:
+!*.js

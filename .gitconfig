@@ -1,0 +1,13 @@
+# you need to run 
+# git config --local include.path ../.gitconfig
+# for git to incorporate this config
+# it's run automatically on npm install via the package.json postinstall script
+
+# Lesser know git settings that most devs should set globally, but may not:
+[blame]
+	ignoreRevsFile = .git-blame-ignore-revs
+
+# These are more unique/project specific settigns and probably should not be set in your global config:
+[core]
+	ignorecase = false
+	autocrlf = false # https://git-scm.com/docs/gitattributes#_end_of_line_conversion
