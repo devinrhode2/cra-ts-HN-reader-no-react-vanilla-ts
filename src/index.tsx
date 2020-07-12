@@ -8,18 +8,20 @@ const config = {
   staggeringMs: 20, // ms to space out story requests by (since sending 30 at once seems foolish)
 }
 
-const sleep = (ms: number) =>
-  new Promise((resolve) => {
-    setTimeout(resolve, ms)
-  })
+const sleep = (ms: number): Promise<number> =>
+  new Promise((resolve) => setTimeout(resolve, ms))
 
-function createRenderer(storyIds: Array<number>) {
+interface Renderer {
+  renderMoreStories: () => void
+}
+
+function createRenderer(storyIds: Array<number>): Renderer {
   const lastLoadedStoryIndex = 0
   const storiesContainer = document.querySelector('#stories') as Element
   if (typeof storiesContainer?.appendChild !== 'function') {
     throw new TypeError('missing #stories container element')
   }
-  function addStoryLi(story: IItem) {
+  function addStoryLi(story: IItem): void {
     const storyLi = document.createElement('li')
     storyLi.innerHTML = `
       <h3>
@@ -37,7 +39,7 @@ function createRenderer(storyIds: Array<number>) {
     `
     storiesContainer.append(storyLi)
   }
-  function renderMoreStories() {
+  function renderMoreStories(): void {
     console.log(
       `loading ${config.storyToLoadAtOnce} more past ${
         lastLoadedStoryIndex + 1
@@ -64,7 +66,7 @@ function createRenderer(storyIds: Array<number>) {
   return { renderMoreStories }
 }
 
-function init() {
+function init(): void {
   rootDiv.innerHTML = `
     <style>
       ul#stories > li h3 {
